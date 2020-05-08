@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="r6y-iQ-FPu">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="FgW-YY-zqQ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r6y-iQ-FPu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="BHd-21-a1a">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="t20-td-liX" kind="relationship" relationship="rootViewController" id="tx2-UB-yb7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vjj-5P-sbe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-603" y="-14"/>
+        </scene>
+        <!--Contacts View Controller-->
+        <scene sceneID="t3H-nv-3wN">
+            <objects>
+                <viewController storyboardIdentifier="ContactsViewController" id="t20-td-liX" customClass="ContactsViewController" customModule="PhoneBook" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="d6Q-hQ-7Jr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4DZ-Hh-8bQ">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" id="4Qk-Ri-Nxy">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Qk-Ri-Nxy" id="RPf-p6-GT4">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="t20-td-liX" id="OvV-3d-uBp"/>
+                                    <outlet property="delegate" destination="t20-td-liX" id="3W2-wU-gON"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="4DZ-Hh-8bQ" firstAttribute="trailing" secondItem="U2E-bB-olR" secondAttribute="trailing" id="4WT-bs-YUh"/>
+                            <constraint firstItem="4DZ-Hh-8bQ" firstAttribute="bottom" secondItem="U2E-bB-olR" secondAttribute="bottom" id="QDs-97-ZHc"/>
+                            <constraint firstItem="4DZ-Hh-8bQ" firstAttribute="leading" secondItem="U2E-bB-olR" secondAttribute="leading" id="SMQ-gv-gPx"/>
+                            <constraint firstItem="4DZ-Hh-8bQ" firstAttribute="top" secondItem="U2E-bB-olR" secondAttribute="top" id="dNa-ed-cVk"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="U2E-bB-olR"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="lX8-Qz-401"/>
+                    <connections>
+                        <outlet property="tableView" destination="4DZ-Hh-8bQ" id="Zlu-1T-fFy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gNO-1p-jTz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="183" y="-14"/>
+        </scene>
+        <!--Add Contact View Controller-->
+        <scene sceneID="nIu-FE-Z7S">
+            <objects>
+                <viewController storyboardIdentifier="AddContactViewController" id="i34-qF-4ra" customClass="AddContactViewController" customModule="PhoneBook" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ATm-AU-asc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="PN7-TJ-jZN"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gdb-Q4-0ci" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="941" y="-338"/>
+        </scene>
+        <!--Edit Contact View Controller-->
+        <scene sceneID="18k-4S-3iL">
+            <objects>
+                <viewController storyboardIdentifier="EditContactViewController" id="fkO-Mb-Wa3" customClass="EditContactViewController" customModule="PhoneBook" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mfP-EZ-pGo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="bw9-hQ-IHX"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fam-tc-cU8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="941" y="389"/>
+        </scene>
+    </scenes>
+</document>
