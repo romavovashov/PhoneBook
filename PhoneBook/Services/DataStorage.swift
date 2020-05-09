@@ -18,7 +18,6 @@ protocol ContactObject: StorageObject {
     var email: String? { get set }
 }
 
-
 open class DataStorage {
 
     public func cleanup() {
@@ -68,4 +67,3 @@ enum FetchResult {
     case report([[String:Any]])
     case empty
 }
-

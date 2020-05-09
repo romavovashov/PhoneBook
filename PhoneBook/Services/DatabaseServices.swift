@@ -39,6 +39,21 @@ internal class DatabaseServices: LocalStorage {
         })
         return container
     }()
+    
+//    lazy var readContext: NSManagedObjectContext = {
+//        let context = persistentContainer.newBackgroundContext()
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.mergeChangesIntoReadContext(notification:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
+//
+//        return context
+//    }()
+//    
+//    @objc private func mergeChangesIntoReadContext(notification: Notification) {
+//        let context = notification.object as? NSManagedObjectContext
+//        if context !== readContext {
+//            readContext.perform { [readContext] in readContext.mergeChanges(fromContextDidSave: notification) }
+//        }
+//    }
 
     func save() {
         let context = persistentContainer.viewContext
@@ -58,31 +73,23 @@ internal class DatabaseServices: LocalStorage {
         let fetchRequest: NSFetchRequest<Contacts> = Contacts.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "lastname", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.fetchBatchSize = 25
         let context = persistentContainer.viewContext
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                  managedObjectContext: context,
+                                                                  sectionNameKeyPath: "lastNameFirstLetter",
+                                                                  cacheName: nil)
         fetchedResultsController.delegate = delegate
-        try! fetchedResultsController.performFetch()
+                do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("An error occurred")
+        }
         return fetchedResultsController
     }
     
     func delete(object: Contacts) {
         let context = persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Contacts> = Contacts.fetchRequest()
-        fetchRequest.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(fetchRequest)
-            for item in results as [NSManagedObject] {
-                if item == object {
-                    context.delete(item)
-                }
-            }
-        }
-        catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
+        context.delete(object)
         do {
             try context.save()
         } catch {
