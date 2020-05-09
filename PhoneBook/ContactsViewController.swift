@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import ContactsUI
+import CallKit
 
-class ContactsViewController: UIViewController {
+class ContactsViewController: UIViewController, UISearchResultsUpdating {
 
     static let reuseIdentifier = "ContactsViewController"
     
@@ -18,24 +19,51 @@ class ContactsViewController: UIViewController {
     
     private let database = DataStorage()
     private lazy var fetchedResultsController = database.setupFetchedResultsController(delegate: self)
-    //TODO: Add implementation
-    private let searchController = UISearchController(searchResultsController: nil)
+    private var isEditContact: Bool = false
+    private var currentObject: Contacts?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationItem.title = "Contacts"
+        setupSearch()
     }
-
+    private func setupSearch() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Contacts Search"
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
+    }
+    
     @IBAction private func addContactFromPhone(sender: UIBarButtonItem) {
-        
+        isEditContact = false
         let contactController = CNContactViewController(forNewContact: nil)
-
         contactController.allowsEditing = true
         contactController.allowsActions = false
         contactController.displayedPropertyKeys = [ CNContactPhoneNumbersKey, CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey]
         contactController.delegate = self
         contactController.view.layoutIfNeeded()
         navigationController?.pushViewController(contactController, animated: true)
+    }
+    
+// MARK: - SearchResultsUpdating
+
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchText = searchController.searchBar.text ?? ""
+        var predicate: NSPredicate?
+        if searchText.count > 0 {
+            predicate = NSPredicate(format: "(firstname contains[cd] %@) || (lastname contains[cd] %@)", searchText, searchText)
+        } else {
+            predicate = nil
+        }
+        fetchedResultsController.fetchRequest.predicate = predicate
+        do {
+            try fetchedResultsController.performFetch()
+            tableView.reloadData()
+        } catch let err {
+            print(err)
+        }
     }
 }
 
@@ -57,7 +85,7 @@ extension ContactsViewController: UITableViewDataSource {
         guard let count = fetchedResultsController.sections?[section].numberOfObjects else  {
             return 0
         }
-        print("SectionNumber: \(count)")
+
         return count
     }
     
@@ -75,20 +103,17 @@ extension ContactsViewController: UITableViewDataSource {
     // 4
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if let section = fetchedResultsController.sections?[section] {
-            print("SectionName: \(section.name)")
             return section.name
         }
         return nil
     }
     // 5
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        print("sectionIndexTitles\(fetchedResultsController.sectionIndexTitles)")
         return fetchedResultsController.sectionIndexTitles
     }
     // 6
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         let result = fetchedResultsController.section(forSectionIndexTitle: title, at: index)
-        print("sectionForSectionIndexTitle: \(result)")
         return result
     }
     
@@ -106,37 +131,53 @@ extension ContactsViewController: UITableViewDataSource {
 
 extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        isEditContact = true
         tableView.deselectRow(at: indexPath, animated: true)
-        // 1
-        let contacts = fetchedResultsController.object(at: indexPath)
-        let contact = contacts.contactValue
-        // 2
-        let contactViewController = CNContactViewController(for: contact)
-
+        let contact = fetchedResultsController.object(at: indexPath)
+        currentObject = contact
+        let contactViewController = CNContactViewController(for: contact.contactValue)
         contactViewController.allowsEditing = true
-        contactViewController.allowsActions = true
+        contactViewController.allowsActions = false
         contactViewController.delegate = self
-        // 3
         navigationController?.pushViewController(contactViewController, animated: true)
     }
 }
 
 //MARK: - CNContactViewControllerDelegate
+
 extension ContactsViewController: CNContactViewControllerDelegate {
     func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
+        
         if let contact = contact {
-            var newContact = database.createContact()
-            newContact.firstname = contact.givenName
-            newContact.lastname = contact.familyName
-            newContact.email = contact.emailAddresses.first?.label
-            newContact.phone = contact.phoneNumbers.first?.label
-            database.save()
+            if isEditContact {
+                currentObject?.firstname = contact.givenName
+                currentObject?.lastname = contact.familyName
+                currentObject?.email = contact.emailAddresses.compactMap { $0 }.first?.value as String?
+                currentObject?.phone = contact.phoneNumbers.compactMap { $0 }.first?.value.stringValue
+                database.save()
+            } else {
+                var newContact = database.createContact()
+                newContact.firstname = contact.givenName
+                newContact.lastname = contact.familyName
+                newContact.email = contact.emailAddresses.first?.label
+                newContact.phone = contact.phoneNumbers.first?.label
+                
+                database.save()
+            }
         }
         navigationController?.popViewController(animated: true)
     }
-    
     func contactViewController(_ viewController: CNContactViewController, shouldPerformDefaultActionFor property: CNContactProperty) -> Bool {
-        print("")
+        
+        if property.key == CNContactPhoneNumbersKey {
+            let phoneNumberProperty: CNPhoneNumber = property.value as! CNPhoneNumber
+            let phoneNumber = phoneNumberProperty.stringValue
+//            makeMyVoIPCall(number: phoneNumber!, video: false)
+            //makeMyVoIPCall(number: "+1234567890", video: false)
+            return false
+        }
+        
+        
         return true
     }
 }
@@ -185,6 +226,7 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
                     let product = self.fetchedResultsController.object(at: indexPath)
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: "ContactCell", for: indexPath)
                     cell.textLabel?.text = "\(product.firstname ?? "") \(product.lastname ?? "")"
+                    self.tableView.reloadData()
                 }
             case .delete:
                 if let indexPath = indexPath {
@@ -209,6 +251,7 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         DispatchQueue.main.async {
             self.tableView.endUpdates()
+
         }
     }
 }

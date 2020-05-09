@@ -17,8 +17,6 @@
 		A89F627E2463DCF200B40661 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A89F627D2463DCF200B40661 /* Assets.xcassets */; };
 		A89F62812463DCF200B40661 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A89F627F2463DCF200B40661 /* LaunchScreen.storyboard */; };
 		A89F62892463DE9D00B40661 /* contacts_data.json in Resources */ = {isa = PBXBuildFile; fileRef = A89F62882463DE9C00B40661 /* contacts_data.json */; };
-		A89F628B2463E22900B40661 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89F628A2463E22900B40661 /* AddContactViewController.swift */; };
-		A89F628D2463E23A00B40661 /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89F628C2463E23A00B40661 /* EditContactViewController.swift */; };
 		A89F62902463E52F00B40661 /* DatabaseServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89F628F2463E52F00B40661 /* DatabaseServices.swift */; };
 		A89F62922463E87600B40661 /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89F62912463E87600B40661 /* DataStorage.swift */; };
 /* End PBXBuildFile section */
@@ -36,8 +34,6 @@
 		A89F62802463DCF200B40661 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A89F62822463DCF200B40661 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A89F62882463DE9C00B40661 /* contacts_data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = contacts_data.json; sourceTree = "<group>"; };
-		A89F628A2463E22900B40661 /* AddContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
-		A89F628C2463E23A00B40661 /* EditContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
 		A89F628F2463E52F00B40661 /* DatabaseServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServices.swift; sourceTree = "<group>"; };
 		A89F62912463E87600B40661 /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,8 +82,6 @@
 				A89F62712463DCF100B40661 /* AppDelegate.swift */,
 				A817B16124643F310058FB01 /* Contact.swift */,
 				A89F62752463DCF100B40661 /* ContactsViewController.swift */,
-				A89F628A2463E22900B40661 /* AddContactViewController.swift */,
-				A89F628C2463E23A00B40661 /* EditContactViewController.swift */,
 				A89F62772463DCF100B40661 /* Main.storyboard */,
 				A89F627D2463DCF200B40661 /* Assets.xcassets */,
 				A89F627F2463DCF200B40661 /* LaunchScreen.storyboard */,
@@ -179,9 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A89F628D2463E23A00B40661 /* EditContactViewController.swift in Sources */,
 				A89F62762463DCF100B40661 /* ContactsViewController.swift in Sources */,
-				A89F628B2463E22900B40661 /* AddContactViewController.swift in Sources */,
 				A89F62722463DCF100B40661 /* AppDelegate.swift in Sources */,
 				A84AF4D02465BCDD00564D9B /* Contacts+Extension.swift in Sources */,
 				A86A261924644C0C00460ABA /* UserDefaults+Extension.swift in Sources */,
