@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A817B16224643F310058FB01 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A817B16124643F310058FB01 /* Contact.swift */; };
 		A84AF4D02465BCDD00564D9B /* Contacts+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84AF4CF2465BCDD00564D9B /* Contacts+Extension.swift */; };
 		A86A261924644C0C00460ABA /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86A261824644C0C00460ABA /* UserDefaults+Extension.swift */; };
 		A89F62722463DCF100B40661 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89F62712463DCF100B40661 /* AppDelegate.swift */; };
@@ -22,7 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A817B16124643F310058FB01 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		A84AF4CF2465BCDD00564D9B /* Contacts+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contacts+Extension.swift"; sourceTree = "<group>"; };
 		A86A261824644C0C00460ABA /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		A89F626E2463DCF100B40661 /* PhoneBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhoneBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +78,6 @@
 				A86A261724644B8400460ABA /* Extensions */,
 				A89F628E2463E51200B40661 /* Services */,
 				A89F62712463DCF100B40661 /* AppDelegate.swift */,
-				A817B16124643F310058FB01 /* Contact.swift */,
 				A89F62752463DCF100B40661 /* ContactsViewController.swift */,
 				A89F62772463DCF100B40661 /* Main.storyboard */,
 				A89F627D2463DCF200B40661 /* Assets.xcassets */,
@@ -177,7 +174,6 @@
 				A89F62722463DCF100B40661 /* AppDelegate.swift in Sources */,
 				A84AF4D02465BCDD00564D9B /* Contacts+Extension.swift in Sources */,
 				A86A261924644C0C00460ABA /* UserDefaults+Extension.swift in Sources */,
-				A817B16224643F310058FB01 /* Contact.swift in Sources */,
 				A89F62902463E52F00B40661 /* DatabaseServices.swift in Sources */,
 				A89F62922463E87600B40661 /* DataStorage.swift in Sources */,
 				A89F627C2463DCF100B40661 /* PhoneBook.xcdatamodeld in Sources */,
