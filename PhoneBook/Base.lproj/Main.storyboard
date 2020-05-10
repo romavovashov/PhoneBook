@@ -62,7 +62,7 @@
                         <viewLayoutGuide key="safeArea" id="U2E-bB-olR"/>
                     </view>
                     <navigationItem key="navigationItem" id="lX8-Qz-401">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="7us-Jl-EWm">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="7us-Jl-EWm">
                             <connections>
                                 <action selector="addContactFromPhoneWithSender:" destination="t20-td-liX" id="b9P-Ui-BCx"/>
                             </connections>

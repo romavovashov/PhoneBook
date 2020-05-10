@@ -12,51 +12,38 @@ import CoreData
 internal class DatabaseServices: LocalStorage {
 
     static var shared = DatabaseServices()
+    
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
+
         let container = NSPersistentCloudKitContainer(name: "PhoneBook")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
         return container
     }()
     
-//    lazy var readContext: NSManagedObjectContext = {
-//        let context = persistentContainer.newBackgroundContext()
-//
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.mergeChangesIntoReadContext(notification:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
-//
-//        return context
-//    }()
-//    
-//    @objc private func mergeChangesIntoReadContext(notification: Notification) {
-//        let context = notification.object as? NSManagedObjectContext
-//        if context !== readContext {
-//            readContext.perform { [readContext] in readContext.mergeChanges(fromContextDidSave: notification) }
-//        }
-//    }
+    lazy var writeContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
 
-    func save() {
-        let context = persistentContainer.viewContext
+        NotificationCenter.default.addObserver(self, selector: #selector(self.mergeChangesIntoReadContext(notification:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
+
+        return context
+    }()
+    
+    @objc private func mergeChangesIntoReadContext(notification: Notification) {
+        let context = notification.object as? NSManagedObjectContext
+        if context !== writeContext {
+            writeContext.perform { [writeContext] in
+                writeContext.mergeChanges(fromContextDidSave: notification)
+            }
+        }
+    }
+
+    func save(onBackground: Bool) {
+        let context = onBackground ? writeContext : persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -103,13 +90,14 @@ internal class DatabaseServices: LocalStorage {
         }
     }
     
-    func newContact() -> ContactObject {
-        return Contacts(context: persistentContainer.viewContext)
+    func newContact(onBackground: Bool) -> ContactObject {
+        return Contacts(context: onBackground ? writeContext : persistentContainer.viewContext)
     }
-
     
     func fetch(filter: FetchFilter) -> FetchResult {
-        guard let filter = filter as? FetchFilterRequest, let request = filter.fetchRequest(), let result = try? persistentContainer.viewContext.fetch(request) else { return .empty }
+        guard let filter = filter as? FetchFilterRequest,
+            let request = filter.fetchRequest(),
+            let result = try? persistentContainer.viewContext.fetch(request) else { return .empty }
         if let array = result as? [StorageObject] {
             if array.count > 1 {
                 return .array(array)

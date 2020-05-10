@@ -24,9 +24,9 @@ class ContactsViewController: UIViewController, UISearchResultsUpdating {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationItem.title = "Contacts"
         setupSearch()
     }
+    
     private func setupSearch() {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
@@ -159,25 +159,16 @@ extension ContactsViewController: CNContactViewControllerDelegate {
                 var newContact = database.createContact()
                 newContact.firstname = contact.givenName
                 newContact.lastname = contact.familyName
-                newContact.email = contact.emailAddresses.first?.label
-                newContact.phone = contact.phoneNumbers.first?.label
+                newContact.email = contact.emailAddresses.compactMap { $0 }.first?.value as String?
+                newContact.phone = contact.phoneNumbers.compactMap { $0 }.first?.value.stringValue
                 
                 database.save()
             }
         }
         navigationController?.popViewController(animated: true)
     }
-    func contactViewController(_ viewController: CNContactViewController, shouldPerformDefaultActionFor property: CNContactProperty) -> Bool {
-        
-        if property.key == CNContactPhoneNumbersKey {
-            let phoneNumberProperty: CNPhoneNumber = property.value as! CNPhoneNumber
-            let phoneNumber = phoneNumberProperty.stringValue
-//            makeMyVoIPCall(number: phoneNumber!, video: false)
-            //makeMyVoIPCall(number: "+1234567890", video: false)
-            return false
-        }
-        
-        
+    func contactViewController(_ viewController: CNContactViewController,
+                               shouldPerformDefaultActionFor property: CNContactProperty) -> Bool {
         return true
     }
 }
@@ -199,7 +190,10 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange sectionInfo: NSFetchedResultsSectionInfo,
+                    atSectionIndex sectionIndex: Int,
+                    for type: NSFetchedResultsChangeType) {
         DispatchQueue.main.async {
             switch type {
             case .insert:
@@ -251,7 +245,6 @@ extension ContactsViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         DispatchQueue.main.async {
             self.tableView.endUpdates()
-
         }
     }
 }

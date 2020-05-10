@@ -24,15 +24,15 @@ open class DataStorage {
         storage.cleanup()
     }
 
-    func save() {
-        storage.save()
+    func save(onBackground: Bool = false) {
+        storage.save(onBackground: onBackground)
     }
 
     func delete(object: Contacts) {
         storage.delete(object: object)
     }
-    func createContact() -> ContactObject {
-        return storage.newContact()
+    func createContact(onBackground: Bool = false) -> ContactObject {
+        return storage.newContact(onBackground: onBackground)
     }
 
     func fetch(filter: FetchFilter) -> FetchResult {
@@ -48,9 +48,9 @@ open class DataStorage {
 
 protocol LocalStorage {
     func cleanup()
-    func save()
+    func save(onBackground: Bool)
     func delete(object: Contacts)
-    func newContact() -> ContactObject
+    func newContact(onBackground: Bool) -> ContactObject
     func fetch(filter: FetchFilter) -> FetchResult
     func setupFetchedResultsController(delegate: NSFetchedResultsControllerDelegate) -> NSFetchedResultsController<Contacts>
 }
