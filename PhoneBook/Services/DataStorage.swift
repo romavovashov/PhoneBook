@@ -34,10 +34,6 @@ open class DataStorage {
     func createContact(onBackground: Bool = false) -> ContactObject {
         return storage.newContact(onBackground: onBackground)
     }
-
-    func fetch(filter: FetchFilter) -> FetchResult {
-        return storage.fetch(filter: filter)
-    }
     
     func setupFetchedResultsController(delegate: NSFetchedResultsControllerDelegate) -> NSFetchedResultsController<Contacts> {
         return storage.setupFetchedResultsController(delegate: delegate)
@@ -51,14 +47,7 @@ protocol LocalStorage {
     func save(onBackground: Bool)
     func delete(object: Contacts)
     func newContact(onBackground: Bool) -> ContactObject
-    func fetch(filter: FetchFilter) -> FetchResult
     func setupFetchedResultsController(delegate: NSFetchedResultsControllerDelegate) -> NSFetchedResultsController<Contacts>
-}
-
-protocol FetchFilter {}
-
-enum ContactFetchFilter: FetchFilter {
-    case all
 }
 
 enum FetchResult {

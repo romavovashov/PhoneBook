@@ -93,24 +93,6 @@ internal class DatabaseServices: LocalStorage {
     func newContact(onBackground: Bool) -> ContactObject {
         return Contacts(context: onBackground ? writeContext : persistentContainer.viewContext)
     }
-    
-    func fetch(filter: FetchFilter) -> FetchResult {
-        guard let filter = filter as? FetchFilterRequest,
-            let request = filter.fetchRequest(),
-            let result = try? persistentContainer.viewContext.fetch(request) else { return .empty }
-        if let array = result as? [StorageObject] {
-            if array.count > 1 {
-                return .array(array)
-            }
-            else if let object = array.first {
-                return .object(object)
-            }
-        }
-        else if let array = result as? [[String: Any]] {
-            return .report(array)
-        }
-        return .empty
-    }
 
     private func deleteAllData(_ entity: String) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
@@ -132,13 +114,3 @@ fileprivate protocol FetchFilterRequest {
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>?
 }
 
-extension ContactFetchFilter: FetchFilterRequest {
-    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        switch self {
-        case .all:
-            return NSFetchRequest<NSFetchRequestResult>(entityName: "Contacts")
-//        default:
-//            return nil
-        }
-    }
-}
